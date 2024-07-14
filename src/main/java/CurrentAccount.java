@@ -3,10 +3,18 @@ import java.util.Date;
 import java.util.List;
 
 public class CurrentAccount {
+    Integer number;
+    Integer agency;
+    String clientName;
+    Date birthDayDate;
     private AccountStatus accountStatus = new AccountStatus(true);
     private final List<Transaction> transactions = new ArrayList<>();
 
-    public CurrentAccount() {
+    public CurrentAccount(Integer number, Integer agency, String clientName, Date birthDayDate) {
+        this.number = number;
+        this.agency = agency;
+        this.clientName = clientName;
+        this.birthDayDate = birthDayDate;
     }
 
     public List<Transaction> extractByPeriod(Date initialDate, Date finalDate) {

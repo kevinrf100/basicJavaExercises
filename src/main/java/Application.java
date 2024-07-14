@@ -1,10 +1,13 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Date;
 
 public class Application {
-    public static void main(String[] args) {
-        CurrentAccount currentAccount = new CurrentAccount();
+    public static void main(String[] args) throws ParseException {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        CurrentAccount currentAccount = new CurrentAccount(1000, 10, "Kevin Rossetti Fernandes", simpleDateFormat.parse("11/09/1996"));
 
         //printing initial Account balance;
         currentAccount.getAccountBalance();
