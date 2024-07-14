@@ -28,6 +28,18 @@ public class CurrentAccount {
         this.setAccountStatus(newAccountStatus);
     }
 
+    public void transferOut(int value, CurrentAccount toAccount) {
+        Transaction transaction = new Transaction();
+
+        transaction.setType(TransactionType.TRANSFER);
+        transaction.setValue(value);
+        transaction.setDate(new Date());
+        transaction.setFromAccount(this);
+
+        toAccount.addTransaction(transaction);
+        this.addTransaction(transaction);
+    }
+
     public void addTransaction(int value, TransactionType type) {
         Transaction transaction = new Transaction();
 
@@ -40,17 +52,28 @@ public class CurrentAccount {
         System.out.println("Transaction Created");
     }
 
+    public void addTransaction(Transaction transaction) {
+        this.transactions.add(transaction);
+    }
+
     public void getAccountBalance() {
         int balance = 0;
         for (Transaction transaction : this.transactions) {
             TransactionType type = transaction.getType();
             balance = switch (type) {
-                case DEPOSIT, TRANSFER_IN -> balance + transaction.getValue();
-                case WITHDRAW, TRANSFER_OUT -> balance - transaction.getValue();
+                case DEPOSIT -> balance + transaction.getValue();
+                case WITHDRAW -> balance - transaction.getValue();
+                case TRANSFER -> {
+                    if (transaction.getFromAccount().equals(this)) {
+                        yield balance - transaction.getValue();
+                    } else {
+                        yield balance + transaction.getValue();
+                    }
+                }
             };
         }
 
-        System.out.println("You account balance is:" + balance);
+        System.out.println(clientName + " balance is:" + balance);
     }
 
     public AccountStatus getAccountStatus() {
